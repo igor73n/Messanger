@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ListView;
 
@@ -25,9 +26,9 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chat_activity);
 
-        ListView messagesList = (ListView) findViewById(R.id.messagesList);
-        adapter = new MessageAdapter(this, R.layout.message, messages);
-        messagesList.setAdapter(adapter);
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.messagesList);
+        adapter = new MessageAdapter(this, messages);
+        recyclerView.setAdapter(adapter);
 
 
         databaseHelper = new DatabaseHelper(getApplicationContext());

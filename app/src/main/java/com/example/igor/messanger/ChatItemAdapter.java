@@ -40,7 +40,7 @@ public class ChatItemAdapter extends ArrayAdapter<ChatItem> {
 
         viewHolder.collocuter.setText(chatItem.getCollocuter());
         viewHolder.lastMessage.setText(chatItem.getLastMessage());
-        viewHolder.data.setText(chatItem.getData());
+        viewHolder.data.setText(chatItem.getData().substring(2,16));
 
         return convertView;
     }

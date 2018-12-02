@@ -5,55 +5,54 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/leftMessage"
+        android:id="@+id/centralData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:paddingLeft="10dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-         />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
-        android:id="@+id/leftData"
+        android:id="@+id/message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@+id/leftMessage"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        />
-
+        android:layout_below="@+id/centralData"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp" />
-
-
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/message"
+        android:layout_below="@+id/centralData"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/rightMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/centralData"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        />
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
     <TextView
         android:id="@+id/rightData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/centralData"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/rightMessage"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
-        />
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp" />
 
 
 </RelativeLayout>
