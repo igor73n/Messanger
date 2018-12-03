@@ -8,22 +8,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
     private LayoutInflater inflater;
-    private List<Message> messages;
-    private final int TYPE_MESSAGE_LEFT = 0;
-    private final int TYPE_MESSAGE_RIGHT = 1;
-    private final int TYPE_MESSAGE_DATA = 2;
+    List<ListItem> messages = new ArrayList<>();
+   // private final int TYPE_LEFT_MESSAGE = 0;
+   // private final int TYPE_RIGHT_MESSAGE = 1;
+   /// private final int TYPE_MESSAGE_DATE = 2;
     View view;
     Integer i = 0;
     String currentData = "";
     String [] monthArray = {"Zero","January", "February", "Marth", "April", "May", "June", "Jule", "August", "September", "October", "November", "December"};
     String temp;
 
-    MessageAdapter(Context context, List<Message> messages) {
+    public MessageAdapter(Context context, List<ListItem> messages) {
         this.messages = messages;
         inflater = LayoutInflater.from(context);
     }
@@ -32,17 +33,17 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     public MessageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
 
-       switch (viewType) {
+        switch (viewType) {
 
-         case TYPE_MESSAGE_DATA:
+            case ListItem.TYPE_DATE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.data, parent, false);
-               break;
+                break;
 
-         case TYPE_MESSAGE_LEFT:
-                    view = LayoutInflater.from(parent.getContext()).inflate(R.layout.left_message, parent, false);
-              break;
+            case ListItem.TYPE_LEFT_MESSAGE:
+                view = LayoutInflater.from(parent.getContext()).inflate(R.layout.left_message, parent, false);
+                break;
 
-           case TYPE_MESSAGE_RIGHT:
+            case ListItem.TYPE_RIGHT_MESSAGE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.right_message, parent, false);
 
         }
@@ -58,74 +59,54 @@ class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
 
         switch (type) {
 
-            case TYPE_MESSAGE_LEFT:
-                holder.message.setText(messages.get(position).getMessage());
-                Log.i("MessageAdapter", "сообщение " + messages.get(position).getMessage());
-                holder.data.setText(messages.get(position).getData().substring(10, 16));
+            case ListItem.TYPE_LEFT_MESSAGE:
+               // holder.data.setText(messages.get(position).getData().substring(10, 16));
+                LeftMessage leftMessage = (LeftMessage) messages.get(position);
+               holder.message.setText(leftMessage.getMessage().getMessage());
                 break;
 
-            case TYPE_MESSAGE_RIGHT:
-                holder.message.setText(messages.get(position).getMessage());
-                holder.data.setText(messages.get(position).getData().substring(10, 16));
+            case ListItem.TYPE_RIGHT_MESSAGE:
+                RightMessage rightMessage = (RightMessage) messages.get(position);
+                holder.message.setText(rightMessage.getMessage().getMessage());
                 break;
 
-            case TYPE_MESSAGE_DATA:
+            case ListItem.TYPE_DATE:
 
-                temp = messages.get(position).getData();
+                Date date = (Date) messages.get(position);
+                holder.data.setText(date.getDate());
+
+                //holder.data.setText(messages..getDate().substring(10, 16));
 
 
-                holder.centralData.setText(messages.get(position).getData().substring(0, 4) +" "+ monthArray[Integer.valueOf(temp.substring(5,7))] + " " + temp.substring(8,11));
+               // holder.centralData.setText(messages.get(position).getData().substring(0, 4) +" "+ monthArray[Integer.valueOf(temp.substring(5,7))] + " " + temp.substring(8,11));
 
-             if(messages.get(position).getSender().equals(MainActivity.MY_NAME)) {
-              holder.rightMessage.setText(messages.get(position).getMessage());
-              holder.rightData.setText(messages.get(position).getData().substring(10, 16));
-            }
-           else {
 
-              holder.message.setText(messages.get(position).getMessage());
-              holder.data.setText(messages.get(position).getData().substring(10,16));
-             }
+                }
         }
-    }
 
 
     @Override
     public int getItemViewType(int position) {
 
-        if (position == 0) return TYPE_MESSAGE_DATA;
+        return messages.get(position).getType();
 
-
-        if (messages.get(position).getData().substring(0, 10).equals(messages.get(position-1).getData().substring(0, 10))) {
-
-            if(messages.get(position).getSender().equals(MainActivity.MY_NAME)) {
-                return TYPE_MESSAGE_RIGHT;
-            }
-            else {
-                return TYPE_MESSAGE_LEFT;
-            }
-        }
-
-        return TYPE_MESSAGE_DATA;
     }
 
-       @Override
-       public int getItemCount() {
-           return messages.size();
-       }
+    @Override
+    public int getItemCount() {
+        return messages.size();
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        final TextView message,data, centralData, rightMessage, rightData;
+        final TextView message,data;
 
         ViewHolder(View view) {
-              super(view);
-                message = (TextView) view.findViewById(R.id.message);
-                data = (TextView) view.findViewById(R.id.data);
-                centralData = (TextView)view.findViewById(R.id.centralData);
-                rightMessage =  (TextView)view.findViewById(R.id.rightMessage);
-                rightData =  (TextView)view.findViewById(R.id.rightData);
+            super(view);
+            message = (TextView) view.findViewById(R.id.message);
+            data = (TextView) view.findViewById(R.id.data);
 
+
+        }
     }
 }
-}
-
