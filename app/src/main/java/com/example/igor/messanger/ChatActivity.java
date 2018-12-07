@@ -20,10 +20,11 @@ public class ChatActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor messageCursor, cursor;
-    String data, message, sender, collocuter, id;
+    String data, message, sender, collocuter;
     Integer i;
     Integer m = 0;
     String count = "0";
+    Integer id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class ChatActivity extends AppCompatActivity {
 
         LinkedHashMap<String, List<Message>> groupedMessages = groupedMessageByDate(messages);
 
-        if(!count.equals("1") )
+        if(id > 5 && !count.equals("1") )
 
         {
             LoadMore loadMore = new LoadMore();
@@ -80,6 +81,7 @@ public class ChatActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         collocuter = intent.getStringExtra(MainActivity.INTENT_MESSAGE);
+        id = Integer.parseInt(intent.getStringExtra(MainActivity.INTENT_MESSAGE_ID));
         db = databaseHelper.open();
         i = 5;
         messageCursor = db.rawQuery("select * from " + collocuter +" where id > (select max(id)-" +i +" from " +collocuter +" )" , null );

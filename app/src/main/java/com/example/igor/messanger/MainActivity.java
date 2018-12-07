@@ -20,9 +20,10 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor userCursor, messageCursor;
-    String collocuter, lastMessage, data;
+    String collocuter, lastMessage, data, id;
     public static final String MY_NAME = "Igor";
     public static final String INTENT_MESSAGE = "From MainActivity";
+    public static final String INTENT_MESSAGE_ID = "id from MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
              Intent intent = new Intent(MainActivity.this,ChatActivity.class);
              intent.putExtra(INTENT_MESSAGE, selectedChatItem.getCollocuter());
+             intent.putExtra(INTENT_MESSAGE_ID,selectedChatItem.getId());
              startActivity(intent);
             }
         };
@@ -66,10 +68,12 @@ public class MainActivity extends AppCompatActivity {
                 messageCursor.moveToLast();
                 lastMessage = messageCursor.getString(messageCursor.getColumnIndex(DatabaseHelper.COLUMN_MESSAGE));
                 data = messageCursor.getString(messageCursor.getColumnIndex(DatabaseHelper.COLUMN_DATA));
+                id = messageCursor.getString(messageCursor.getColumnIndex("id"));
                 Log.i("main", "Собеседник "   +collocuter);
                 Log.i("main", "Последнее сообщение "   +lastMessage);
                 Log.i("main", "Дата и время "   +data);
-                chatItems.add(new ChatItem(collocuter, lastMessage, data));
+                Log.i("main", "Ид "   +id);
+                chatItems.add(new ChatItem(collocuter, lastMessage, data, id));
             }
             while (userCursor.moveToNext());
          }
