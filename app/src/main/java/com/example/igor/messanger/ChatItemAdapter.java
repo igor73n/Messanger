@@ -1,61 +1,86 @@
 package com.example.igor.messanger;
 
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-public class ChatItemAdapter extends ArrayAdapter<ChatItem> {
 
-    private  List<ChatItem> chatItems;
+class ChatItemAdapter extends RecyclerView.Adapter<ChatItemAdapter.ViewHolder> {
+
     private LayoutInflater inflater;
+    List<ChatItem> chatItems = new ArrayList<>();
     private int layout;
+    Context myContext;
+    View view;
 
-    public ChatItemAdapter(Context context, int resource, List<ChatItem> chatItems ) {
-        super(context, resource, chatItems);
+     ChatItemAdapter(Context context, List<ChatItem> chatItems ) {
         this.chatItems = chatItems;
-        this.layout = resource;
         inflater = LayoutInflater.from(context);
+        this.myContext = context;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
 
-        ViewHolder viewHolder;
+    @Override
+    public ChatItemAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if (convertView == null) {
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chat_item, parent, false);
+        return new ViewHolder(view);
+    }
 
-            convertView = inflater.inflate(this.layout, parent, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
+
+    @Override
+    public void onBindViewHolder(ChatItemAdapter.ViewHolder holder, final int position) {
+
+       ChatItem chatItem = chatItems.get(position);
+       holder.collocuter.setText(chatItem.getCollocuter());
+       holder.lastMessage.setText(chatItem.getLastMessage());
+       holder.data.setText(chatItem.getData());
+    }
+
+    @Override
+    public int getItemCount() {
+        return chatItems.size();
+    }
+
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+
+        final TextView collocuter, data, lastMessage;
+
+        ViewHolder(View view) {
+            super(view);
+            view.setOnClickListener(this);
+
+            collocuter = (TextView) view.findViewById(R.id.collocuter);
+            data = (TextView) view.findViewById(R.id.data);
+            lastMessage = (TextView) view.findViewById(R.id.lastMessage);
+
+
         }
 
-        ChatItem chatItem = chatItems.get(position);
-
-        viewHolder.collocuter.setText(chatItem.getCollocuter());
-        viewHolder.lastMessage.setText(chatItem.getLastMessage());
-        viewHolder.data.setText(chatItem.getData().substring(2,16));
-
-        return convertView;
-    }
-
-    private class ViewHolder {
-
-        final TextView collocuter, lastMessage, data;
-
-        private ViewHolder(View view) {
-            collocuter = (TextView)view.findViewById(R.id.collocuter);
-            lastMessage = (TextView)view.findViewById(R.id.lastMessage);
-            data = (TextView)view.findViewById(R.id.data);
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            itemClick(position);
 
         }
+    }
+
+    private void itemClick(int position){
+
+        Intent intent = new Intent(myContext,ChatActivity.class);
+        intent.putExtra(MainActivity.INTENT_MESSAGE, chatItems.get(position).getCollocuter());
+        intent.putExtra(MainActivity.INTENT_MESSAGE_ID,chatItems.get(position).getId());
+        myContext.startActivity(intent);
 
     }
+
 
 }

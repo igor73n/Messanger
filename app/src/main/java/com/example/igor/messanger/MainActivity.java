@@ -1,22 +1,18 @@
 package com.example.igor.messanger;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.List;
-import android.widget.AdapterView;
 
 public class MainActivity extends AppCompatActivity {
 
     private List<ChatItem> chatItems = new ArrayList<>();
     ChatItemAdapter adapter;
-    ListView chatItemsList;
     DatabaseHelper databaseHelper;
     SQLiteDatabase db;
     Cursor userCursor, messageCursor;
@@ -29,33 +25,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView chatItemsList = (ListView) findViewById(R.id.chatItemsList);
-        adapter = new ChatItemAdapter(this, R.layout.chat_item, chatItems);
-        chatItemsList.setAdapter(adapter);
-
-        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-
-                ChatItem selectedChatItem = (ChatItem) parent.getItemAtPosition(position);
-
-             Intent intent = new Intent(MainActivity.this,ChatActivity.class);
-             intent.putExtra(INTENT_MESSAGE, selectedChatItem.getCollocuter());
-             intent.putExtra(INTENT_MESSAGE_ID,selectedChatItem.getId());
-             startActivity(intent);
-            }
-        };
-
-        chatItemsList.setOnItemClickListener(itemListener);
         databaseHelper = new DatabaseHelper(getApplicationContext());
         databaseHelper.create_db();
         setInicisialData();
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.chatItemsList);
+        adapter = new ChatItemAdapter(this, chatItems);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-    }
+   public void onResume() {
+       super.onResume();
+   }
 
     public void setInicisialData() {
         db = databaseHelper.open();
@@ -80,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
          else
             userCursor.close();
             messageCursor.close();
-        adapter.notifyDataSetChanged();
         }
     }
 
